@@ -1,3 +1,4 @@
+"""Importing packages"""
 from flask import Flask, render_template, request
 from EmotionDetector.emotion_detection import emotion_detector
 
@@ -5,6 +6,7 @@ app = Flask("Emotion Detector")
 
 @app.route("/emotionDetector")
 def sent_detector():
+    """Send emotion to the detector"""
     # Retrieve the text to analyze from the request arguments
     text_to_analyze = request.args.get('text_to_analyze')
 
@@ -12,17 +14,19 @@ def sent_detector():
     response = emotion_detector(text_to_analyze)
 
     # Extract the label and score from the response
-    label = response['dominant_emotion'][0]  
+    label = response['dominant_emotion'][0]
     score = response[response['dominant_emotion'][0]]
 
-    if score == None:
+    if score is None:
         return "Invalid text! Please try again!"
 
     # Return a formatted string with the emotion label and score
     return "The given text has been identified as " + label + " with a score of " + str(score)
 
+
 @app.route("/")
 def render_index_page():
+    """Render index.html"""
     return render_template('index.html')
 
 if __name__ == "__main__":
